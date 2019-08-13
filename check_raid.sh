@@ -11,7 +11,7 @@ TODAYS_REPORT="${DATA_LOCATION}/$(date +\"%Y-%m-%d\").log"
 
 mkdir -p ${DATA_LOCATION}
 
-$(CHECK_CMD) >> ${TODAYS_REPORT}
+eval ${CHECK_CMD} >> ${TODAYS_REPORT}
 
 read -r -d '' MESSAGE << EOM
 EHLO ${AMAZONSES_HOST}
