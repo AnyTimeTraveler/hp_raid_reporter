@@ -2,8 +2,8 @@
 
 source ${HOME}/amazonsecreds.sh
 
-username=$(echo -n "${AMAZONSESUSERNAME}" | openssl enc -base64)
-password=$(echo -n "${AMAZONSESPASSWORD}" | openssl enc -base64)
+username=$(echo -n "${AMAZONSES_USERNAME}" | openssl enc -base64)
+password=$(echo -n "${AMAZONSES_PASSWORD}" | openssl enc -base64)
 
 DATA_LOCATION=/root/raid_monitor/
 CHECK_CMD="ssacli controller all show config"
@@ -17,12 +17,12 @@ EHLO example.com
 AUTH LOGIN
 ${username}
 ${password}
-MAIL FROM: automated@simonscode.host
-RCPT TO: simonstruck70@gmail.com
+MAIL FROM: ${AMAZONSES_EMAIL_FROM}
+RCPT TO: ${AMAZONSES_EMAIL_TO}
 DATA
 X-SES-CONFIGURATION-SET: ConfigSet
-From: RAID Check Script <automated@simonscode.host>
-To: simonstruck70@gmail.com
+From: RAID Check Script <${AMAZONSES_EMAIL_FROM}>
+To: ${AMAZONSES_EMAIL_TO}
 Subject: RAID Check CHANGED!
 
 $(cat ${TODAYS_REPORT})
