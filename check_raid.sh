@@ -5,10 +5,11 @@ source ${HOME}/amazonsecreds.sh
 username=$(echo -n "${AMAZONSES_USERNAME}" | openssl enc -base64)
 password=$(echo -n "${AMAZONSES_PASSWORD}" | openssl enc -base64)
 
-DATA_LOCATION=/root/raid_monitor/
+DATA_LOCATION=/var/log/raid_monitor
 CHECK_CMD="ssacli controller all show config"
 TODAYS_REPORT="${DATA_LOCATION}/$(date +\"%Y-%m-%d\").log"
 
+mkdir -p ${DATA_LOCATION}
 
 $(CHECK_CMD) >> ${TODAYS_REPORT}
 
