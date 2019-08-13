@@ -13,7 +13,7 @@ TODAYS_REPORT="${DATA_LOCATION}/$(date +\"%Y-%m-%d\").log"
 $(CHECK_CMD) >> ${TODAYS_REPORT}
 
 read -r -d '' MESSAGE << EOM
-EHLO example.com
+EHLO ${AMAZONSES_HOST}
 AUTH LOGIN
 ${username}
 ${password}
