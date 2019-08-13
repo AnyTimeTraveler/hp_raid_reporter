@@ -10,9 +10,9 @@ TODAYS_REPORT="${DATA_LOCATION}/$(date +\"%Y-%m-%d\").log"
 
 mkdir -p ${DATA_LOCATION}
 
-ssacli controller all show config >> ${TODAYS_REPORT}
+ssacli controller all show config > ${TODAYS_REPORT}
 
-read -r -d '' MESSAGE << EOM
+MESSAGE=$(cat <<EOF
 EHLO ${AMAZONSES_HOST}
 AUTH LOGIN
 ${username}
@@ -32,7 +32,8 @@ Differences:
 $(diff ${DATA_LOCATION}/last_report ${TODAYS_REPORT})
 .
 QUIT
-EOM
+EOF
+)
 
 
 
