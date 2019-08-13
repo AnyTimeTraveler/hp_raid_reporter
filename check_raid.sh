@@ -37,7 +37,7 @@ EOM
 
 
 if ! diff ${DATA_LOCATION}/last_report ${TODAYS_REPORT}; then
-   openssl s_client -crlf -quiet -starttls smtp -connect email-smtp.eu-west-1.amazonaws.com:587 < ${MESSAGE}
+   openssl s_client -crlf -quiet -starttls smtp -connect ${AMAZONSES_URL} < ${MESSAGE}
    rm -f ${DATA_LOCATION}/last_report
    ln -s ${TODAYS_REPORT} ${DATA_LOCATION}/last_report
 else
