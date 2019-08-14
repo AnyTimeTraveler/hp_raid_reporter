@@ -2,8 +2,8 @@
 
 source ${HOME}/amazonsecreds.sh
 
-username=$(echo -n "${AMAZONSES_USERNAME}" | openssl enc -base64)
-password=$(echo -n "${AMAZONSES_PASSWORD}" | openssl enc -base64)
+username=$(echo -n "${AMAZONSES_USERNAME}" | base64)
+password=$(echo -n "${AMAZONSES_PASSWORD}" | base64)
 
 DATA_LOCATION=/var/log/raid_monitor
 TODAYS_REPORT="${DATA_LOCATION}/$(date +"%Y-%m-%d").log"
