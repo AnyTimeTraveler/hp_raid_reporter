@@ -6,13 +6,13 @@ username=$(echo -n "${AMAZONSES_USERNAME}" | openssl enc -base64)
 password=$(echo -n "${AMAZONSES_PASSWORD}" | openssl enc -base64)
 
 DATA_LOCATION=/var/log/raid_monitor
-TODAYS_REPORT="${DATA_LOCATION}/$(date +\"%Y-%m-%d\").log"
+TODAYS_REPORT="${DATA_LOCATION}/$(date +"%Y-%m-%d").log"
 
 mkdir -p ${DATA_LOCATION}
 
 ssacli controller all show config > ${TODAYS_REPORT}
 
-MESSAGE=$(cat <<EOF
+cat <<-EOF > /tmp/raid-monitor.temp
 EHLO ${AMAZONSES_HOST}
 AUTH LOGIN
 ${username}
@@ -33,14 +33,15 @@ $(diff ${DATA_LOCATION}/last_report ${TODAYS_REPORT})
 .
 QUIT
 EOF
-)
 
 
 
-if ! diff ${DATA_LOCATION}/last_report ${TODAYS_REPORT}; then
-   openssl s_client -crlf -quiet -starttls smtp -connect ${AMAZONSES_URL} <(${MESSAGE})
+if ! diff ${DATA_LOCATION}/last_report /tmp/raid-monitor.temp; then
+   openssl s_client -crlf -quiet -starttls smtp -connect ${AMAZONSES_URL} < ${TODAYS_REPORT}
    rm -f ${DATA_LOCATION}/last_report
    ln -s ${TODAYS_REPORT} ${DATA_LOCATION}/last_report
 else
     rm -f ${TODAYS_REPORT}
 fi
+
+rm -f /tmp/raid-monitor.temp
